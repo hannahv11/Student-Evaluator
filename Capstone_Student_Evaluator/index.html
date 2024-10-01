@@ -14,8 +14,8 @@
    <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="calculation.js" defer></script>
-
   
+
 </head>
 
 <body>
@@ -23,7 +23,7 @@
     <p>Please fill out this peer review form for each one of your team mates.</p>
 	<p>Grade each question on a scale of 1 to 20 in the drop down list. <br> Please also add any other comments.</p>
 	
-	<form method="post" action="mailto:pipern20@gmail.com">	
+	<form method="post">	
 		
 		<label for="peer">Pick a Classmate for Review</label>
 			<select id="peer" name="peer">
@@ -55,7 +55,7 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <input type="text" id="Q1TB" name="Q1TB" value=""><br>	 
+        <textarea id="Q1TB" name="Q1TB" rows="4" cols="50"></textarea><br>	 
 		
 		
 		<label for="Q2">Team member assignments were handed in, in a timely manner:</label><br>
@@ -81,7 +81,7 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <input type="text" id="Q2TB" name="Q2TB" value=""><br>
+        <textarea id="Q2TB" name="Q2TB" rows="4" cols="50"></textarea><br>
 		
 		<label for="Q3">Team member produced quality work:</label><br>
 		<select id="Q3" name="Q3">
@@ -106,7 +106,7 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <input type="text" id="Q3TB" name="Q3TB" value=""><br>
+        <textarea id="Q3TB" name="Q3TB" rows="4" cols="50"></textarea><br>
 		
 		<label for="Q4">Group interaction was professional and respectful:</label><br>
 		<select id="Q4" name="Q4">
@@ -131,7 +131,7 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <input type="text" id="Q4TB" name="Q4TB" value=""><br>
+        <textarea id="Q4TB" name="Q4TB" rows="4" cols="50"></textarea><br>
 
 		
 		<label for="Q5">Team member willingly engaged:</label><br>
@@ -157,11 +157,11 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-		<input type="text" id="Q5TB" name="Q5TB" value=""><br><br>
+		<textarea id="Q5TB" name="Q5TB" rows="4" cols="50"></textarea><br>
 
 		
 		<input type="reset" value="Reset">
-		<input type="submit" value="Submit">
+		<input type="submit" id = "submit" value="Submit">
 
 		<!-- For testing, delete later -->
 		<p>Score 1: </p>
