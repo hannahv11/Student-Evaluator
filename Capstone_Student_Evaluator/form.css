@@ -32,7 +32,7 @@ label {
     color: black;
 }
 
-select, textarea, input[type="submit"], input[type="reset"] {
+select, textarea, button[type="submit"], button[type="reset"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -50,18 +50,19 @@ textarea {
     background-color: rgb(243, 243, 233);
 }
 
-input[type="submit"], input[type="reset"] {
+
+button[type="submit"], button[type="reset"] {
     background-color: rgb(135, 135, 127);
     color: white;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: rgb(51, 183, 10);
 } 
 
 
-input[type="reset"]:hover {
+button[type="reset"]:hover {
     background-color: rgb(215, 71, 63);
 }
 
