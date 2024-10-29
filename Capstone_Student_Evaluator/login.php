@@ -56,15 +56,32 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 <html>
 <head>
 	<title>Login</title>
+	<link rel = "stylesheet" href="navigation.css">
+	<link rel = "stylesheet" href="signup.css">
 </head>
+
+<body>
+
+<div class="topnav">
+  <a class="active" href="home_page.html">Home</a>
+  <a href="index.html">Peer Review Form</a>
+  <a href="signup.php">Register</a>
+  <a href="faculty.php">Faculty</a>
+  <a href="student.php">Student</a>
+  <a href="login.php">Login</a>
+</div>
+</header>
 
 <body>
 
 	<div id="login">
 		<form method="post">
 			<h1>Login</h1>
-
+			
+		<label for="username">Username:</label>
 			<input id="text" type="text" name="username"><br><br>
+			
+		<label for="password">Password:</label>
 			<input id="text" type="password" name="password"><br><br>
 
 			<input id="button" type="submit" value="Login"><br><br>
