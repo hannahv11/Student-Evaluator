@@ -12,6 +12,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 	// something was posted
 	$username = $_POST['username'];
 	$password = $_POST['password'];
+	$role = $_POST['role'];
 		
 	if(!empty($username) && !empty($password) && !is_numeric($username))
 	{
@@ -26,11 +27,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 				{
 					$user_data = mysqli_fetch_assoc($result);
 					
+					// validates if the information was correct and redirects to correct page
 					if($user_data['password'] === $password)
 					{
-						$_SESSION['id'] = $user_data['id'];
-						header("Location: index.html");
-						die;
+							$_SESSION['id'] = $user_data['id'];
+							if($user_data['role'] === 'instructor') {
+								header("Location: faculty.php");
+								die;
+							} 
+							else {
+								header("Location: student.php");
+								die;
+							}
 					}
 				}
 		}
