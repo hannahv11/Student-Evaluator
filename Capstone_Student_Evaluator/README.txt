@@ -46,3 +46,22 @@ with XAMPP running (especially for PHP functionality testing,)
 	For example: to use the test_db_connection.php file
 	you would type http://localhost/Capstone_Student_Evaluator/test_db_connection.php 
 	in your web browser. All other files should work this way as well.
+
+
+
+
+
+***Edits to the DB to add in first_name and last_name for use on the signup page.
+
+1. Go to the localhost/phpMyAdmin page
+
+2. Go to the users DB and click on SQL tab at top of navigation bar
+
+3. Erase the lines it wants you to type and write this code to add these columns to the table.
+	ALTER TABLE users
+	ADD COLUMN first_name VARCHAR(50) NOT NULL,
+	ADD COLUMN last_name VARCHAR(50) NOT NULL;
+
+4. Press go
+
+5. That should add the new columns first_name and last_name to the DB to be able to identify users by their first and last name and not just by username/ID. You now should also be able to add entries using the signup.php page to start adding students and teachers to the database
