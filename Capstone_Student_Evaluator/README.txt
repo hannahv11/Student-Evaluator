@@ -65,3 +65,34 @@ with XAMPP running (especially for PHP functionality testing,)
 4. Press go
 
 5. That should add the new columns first_name and last_name to the DB to be able to identify users by their first and last name and not just by username/ID. You now should also be able to add entries using the signup.php page to start adding students and teachers to the database
+
+***Edits for including submission function***
+
+1. Go to localhost/phpmyadmin
+
+2. Click on SQL tab in page
+
+3. When the blank query textbox pops up, paste this:
+
+	USE peer_review_db;
+
+	CREATE TABLE submissions ( 
+	id INT AUTO_INCREMENT PRIMARY KEY, 
+	review_id INT NOT NULL, 
+	student_id INT NOT NULL, 
+	q1_rating INT, 
+	q1_comment TEXT, 
+	q2_rating INT, 
+	q2_comment TEXT, 
+	q3_rating INT, 
+	q3_comment TEXT, 
+	q4_rating INT, 
+	q4_comment TEXT, 
+	q5_rating INT, 
+	q5_comment TEXT, 
+	FOREIGN KEY (review_id) REFERENCES users(id), 
+	FOREIGN KEY (student_id) REFERENCES users(id) 
+	); 
+4. Press Go
+
+5. Now with this and the updated files from the GitHub. Reviews are able to be submitted by any logged in students, and passwords are now hashed when signing up. NOTE: you cannot use any old created users that don't have hashed passwords after the changes I've made. For testing, you will need make a new user. It will not let you log in with users that don't have a hashed password -HV
