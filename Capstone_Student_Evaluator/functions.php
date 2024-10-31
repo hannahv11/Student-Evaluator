@@ -1,11 +1,12 @@
 <?php
+//Is this file needed? unsure if so?? -HV
 
 function check_login($con)
 {
-	if(isset($_SESSION['userid']))
+	if(isset($_SESSION['id']))
 	{
-		$id = $_SESSION['userid'];
-		$query = "select * from users where userid = '$id' limit 1";
+		$id = $_SESSION['id'];
+		$query = "select * from users where id = '$id' limit 1";
 
 		$result = mysqli_query($con,$query);
 		if($result && mysqli_num_rows($result) > 0)
@@ -18,7 +19,7 @@ function check_login($con)
 
 	// redirect to login
 	header("Location: login.php");
-	die;
+	exit;
 }
 
 function random_num($length)

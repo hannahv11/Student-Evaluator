@@ -1,19 +1,21 @@
 <?php
-$host = 'localhost'; //Connects to LocalHost and created database
-$dbname = 'peer_review_db';
-$username = 'root'; //Default SQL user and pass for testing purposes (Will NOT be permanent)
-$password = '';
+$host = 'localhost'; //connects to localhost
+$db = 'peer_review_db'; //created db
+$user = 'root'; //default db user for testing purposes
+$pass = ''; //default pass
+$charset = 'utf8mb4'; //character set
 
-$con = mysqli_connect("localhost", "root", "", "peer_review_db");
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    //throws visible exceptions in case of errors
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+];
 
 try {
-    //Connects to database with PDO
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    //Throws exception if there's a connection error from the DB
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch (PDOException $e) {
-    //Stops connection script and displays error in case of failure
-    die("Connection Failed: " . $e->getMessage());
+    //creates PDO instance to interact with DB
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    //catches PDO related exceptions just in case
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 ?>

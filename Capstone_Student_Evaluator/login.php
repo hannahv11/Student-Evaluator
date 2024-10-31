@@ -1,55 +1,28 @@
 <?php
-
 session_start();
+include 'db_connection.php';
 
-include("db_connection.php");
-include("functions.php");
+//checks if info is posted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-if($_SERVER['REQUEST_METHOD'] == "POST")
-{
+    //fetches user info from database when login is successful
+	//had to edit to work with PDO -HV
+    $stmt = $pdo->prepare("SELECT id, role, password FROM users WHERE username = ?");
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-	// something was posted
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	$role = $_POST['role'];
-		
-	if(!empty($username) && !empty($password) && !is_numeric($username))
-	{
-		// read from database
-		$query = "select * from users where username = '$username' limit 1";
-
-		$result = mysqli_query($con,$query);
-
-		if($result)
-		{
-			if($result && mysqli_num_rows($result) > 0)
-				{
-					$user_data = mysqli_fetch_assoc($result);
-					
-					// validates if the information was correct and redirects to correct page
-					if($user_data['password'] === $password)
-					{
-							$_SESSION['id'] = $user_data['id'];
-							if($user_data['role'] === 'instructor') {
-								header("Location: faculty.php");
-								die;
-							} 
-							else {
-								header("Location: student.php");
-								die;
-							}
-					}
-				}
-		}
-		echo "Wrong username or password";
-		
-	} else 
-	{
-		echo "Wrong username or password";
-	}
+	//fetches proper role and starts session if login was successful, throws message if not.
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['id'] = $user['id'];
+        $_SESSION['role'] = $user['role'];
+        header("Location: index.php");
+        exit;
+    } else {
+        echo "Invalid username or password.";
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
 <div class="topnav">
   <a class="active" href="home_page.html">Home</a>
-  <a href="index.html">Peer Review Form</a>
+  <a href="index.php">Peer Review Form</a>
   <a href="signup.php">Register</a>
   <a href="faculty.php">Faculty</a>
   <a href="student.php">Student</a>

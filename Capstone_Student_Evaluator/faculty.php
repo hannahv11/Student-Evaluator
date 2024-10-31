@@ -2,10 +2,15 @@
 session_start();
 include 'db_connection.php';
 
-/* //Check if the user is logged in and is a teacher
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'teacher') {
-   die("Access denied");
-} */
+//checks if logged in user is faculty. If not you're brought back to login
+//could be tweaked possibly 
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'faculty') {
+    header("Location: login.php");
+    exit;
+}
+
+//Need code for viewing all reviews on faculty dashboard possibly??
+
 ?>
 
 <!DOCTYPE html>
