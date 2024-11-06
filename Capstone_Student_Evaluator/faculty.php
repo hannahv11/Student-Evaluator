@@ -3,13 +3,22 @@ session_start();
 include 'db_connection.php';
 
 //checks if logged in user is faculty. If not you're brought back to login
-//could be tweaked possibly 
-if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'faculty') {
+if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'instructor') {
     header("Location: login.php");
     exit;
 }
 
-//Need code for viewing all reviews on faculty dashboard possibly??
+//fetches created users from the db to write a review on. Must be student roles
+$students = [];
+$sql = "SELECT id, first_name, last_name FROM users WHERE role = 'student'";
+$result = $pdo->query($sql);
+
+if ($result) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        $students[] = $row;
+    }
+}
+
 
 ?>
 
@@ -38,37 +47,47 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'faculty') {
 <body>
 <header>
 <div class="topnav">
-  <a class="active" href="home_page.html">Home</a>
   <a href="index.html">Peer Review Form</a>
   <a href="register.php">Register</a>
   <a href="faculty.php">Faculty</a>
   <a href="student.php">Student</a>
   <a href="login.php">Login</a>
+  <a href="logout.php">Logout</a>
+
 </div>
 </header>
 
 
     <h1>Faculty</h1>
 	
-	<form method="post">	
+	<form action="generatePDF.php" method="post">	
+		<label for="report">Pick a Student to Generate their PDF Report</label>
+        <select id="peer" name="review_id" required>
+            <option value="">Select a student...</option>
+			<!-- Retrieves student users from db for selection-->
+            <?php foreach ($students as $student): ?>
+                <option value="<?php echo $student['id']; ?>">
+                    <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
+		<button type="submit" id = "generate_reports" value="generate_reports">Generate Report</button>
 		
-		<label for="peer">Pick a Student to Generate their Report</label>
-			<select id="peer" name="peer">
-				<option value="Hannah">Hannah</option>
-				<option value="Josh">Josh</option>
-				<option value="Piper">Piper</option>
-			</select><br><br>
-		<button type="submit" id = "submit" value="Submit">Generate Report</button>
 	</form>
 	<br><br>
-	<form method="post">	
-		<label for="peer">Pick a Student to View their Reviews</label>
-			<select id="peer" name="peer">
-				<option value="Hannah">Hannah</option>
-				<option value="Josh">Josh</option>
-				<option value="Piper">Piper</option>
-			</select><br><br>
-		<button type="submit" id = "submit" value="Submit">View Reviews</button>
+	
+	<form action="view.php" method="post">	
+		<label for="review">Pick a Student to View their Reviews</label>
+        <select id="peer" name="student_id" required>
+            <option value="">Select a student...</option>
+			<!-- Retrieves student users from db for selection-->
+            <?php foreach ($students as $student): ?>
+                <option value="<?php echo $student['id']; ?>">
+                    <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
+		<button type="submit" id = "view_reviews" value="view_reviews">View Reviews</button>
 		
 	</form>
    <footer>
