@@ -96,3 +96,15 @@ with XAMPP running (especially for PHP functionality testing,)
 4. Press Go
 
 5. Now with this and the updated files from the GitHub. Reviews are able to be submitted by any logged in students, and passwords are now hashed when signing up. NOTE: you cannot use any old created users that don't have hashed passwords after the changes I've made. For testing, you will need make a new user. It will not let you log in with users that don't have a hashed password -HV
+
+**Edits for pdf generation 
+
+1. Go to this website: http://www.fpdf.org This will have you download the fpdf library that allows us to generate pdfs easier.
+
+2.Go to Downloads
+
+3. Download the first zip file that is in English. This should be the version v1.86 (2023-06-25).
+
+4. Unzip the file and make sure to put it into the same file as the Capstone_Student_Evaluator, this will make sure the code can find the files in the right spot.
+
+5. All of the FPDF files should be in a file named fpdf within the Capstone_Student_Evaluator folder. 
