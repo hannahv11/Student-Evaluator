@@ -105,6 +105,6 @@ with XAMPP running (especially for PHP functionality testing,)
 
 3. Download the first zip file that is in English. This should be the version v1.86 (2023-06-25).
 
-4. Unzip the file and make sure to put it into the same file as the Capstone_Student_Evaluator, this will make sure the code can find the files in the right spot.
+4. Unzip the file and make sure to put it into the same folder as the Capstone_Student_Evaluator, this will make sure the code can find the files in the right spot.
 
-5. All of the FPDF files should be in a file named fpdf within the Capstone_Student_Evaluator folder. 
+5. All of the FPDF files should be in a folder named fpdf within the Capstone_Student_Evaluator folder. 
