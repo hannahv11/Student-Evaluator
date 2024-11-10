@@ -1,7 +1,36 @@
 <?php
 session_start();
 include("db_connection.php"); 
+include 'active_user.php';
+
 // include("functions.php"); where to utilize?
+
+// Checks to see that the admin hasn't been created already
+$check_admin_stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$check_admin_stmt->execute([1]);
+$admin_check_result = $check_admin_stmt->fetch(PDO::FETCH_ASSOC);
+
+// creates the admin account if not
+if(!$admin_check_result) {
+    $admin_first_name = 'Admin';
+    $admin_last_name = '';
+    $admin_user = 'admin';
+    $admin_password = 'Password123!'; // change this later, or add a way to change password
+    $role = 'instructor';
+    $admin_id = 1;
+    
+    $hashed_admin_pass = password_hash($admin_password, PASSWORD_DEFAULT);
+    $query = "INSERT INTO users (id, first_name, last_name, username, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = $pdo->prepare($query); 
+                //edited this to gel with PDO and password hashing in connection/submission script -HV
+                if ($stmt->execute([$admin_id, $admin_first_name, $admin_last_name, $admin_user, $hashed_admin_pass, $role])) {
+                    header("Location: signup.php");
+                    exit();
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Gets data from the form
@@ -9,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $last_name = $_POST['last_name'];
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $role = $_POST['role'];
+    $role = 'student';
 
     if (!empty($first_name) && !empty($last_name) && !empty($username) && !empty($password) && !is_numeric($username)) {
        
@@ -95,12 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		
 		<label for="password">Password:</label>
 			<input id="text" type="password" name="password"><br><br>
-		 
-        <input id="student" type="radio" name="role" value="student" checked>
-            <label for="student">Student</label><br>
-            
-		<input id="instructor" type="radio" name="role" value="instructor">
-            <label for="instructor">Instructor</label><br><br>
 
 			<input id="button" type="submit" name="submit" value="Sign Up"><br><br>
 

@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
+
 
 //checks if info is posted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

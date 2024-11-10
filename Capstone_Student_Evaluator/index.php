@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
 
 //check if user is logged in
 if (!isset($_SESSION['id']) || !isset($_SESSION['role'])) {
@@ -8,6 +9,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['role'])) {
     header("Location: login.php");
     exit;
 }
+
 
 //fetches created users from the db to write a review on. Must be student roles
 $students = [];
@@ -19,6 +21,18 @@ if ($result) {
         $students[] = $row;
     }
 }
+
+
+// checks and displays active user
+$user_id = $_SESSION['id'];
+$stmt = $pdo->prepare("SELECT  first_name, last_name FROM users WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $active_user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$_SESSION['first_name'] = $active_user['first_name'];
+$_SESSION['last_name'] = $active_user['last_name'];
+
+
 	//USED DURING TESTING:
 // Redirect based on role
 //if ($_SESSION['role'] === 'student') {
@@ -53,7 +67,7 @@ if ($result) {
     <p>Grade each question on a scale of 1 to 20 in the drop-down list. <br> Please also add any other comments.</p>
 
     <form method="post" action="submission_script.php">
-        <input type="hidden" name="student_id" value="<?php echo $_SESSION['user_id']; ?>"> <!-- Set student ID from session -->
+        <input type="hidden" name="student_id" value="<?php echo $_SESSION['id']; ?>"> <!-- Set student ID from session -->
 
         <label for="peer">Pick a Classmate for Review</label>
         <select id="peer" name="review_id" required>

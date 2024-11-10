@@ -108,3 +108,14 @@ with XAMPP running (especially for PHP functionality testing,)
 4. Unzip the file and make sure to put it into the same folder as the Capstone_Student_Evaluator, this will make sure the code can find the files in the right spot.
 
 5. All of the FPDF files should be in a folder named fpdf within the Capstone_Student_Evaluator folder. 
+
+** Ensures that names are searchable for active_user.php
+
+1. Go to localhost/phpmyadmin
+
+2. Click on SQL tab in page
+
+3. When the blank query textbox pops up, paste this:
+
+"ALTER TABLE `users` ADD INDEX(`first_name`);"
+"ALTER TABLE `users` ADD INDEX("last_name`);"

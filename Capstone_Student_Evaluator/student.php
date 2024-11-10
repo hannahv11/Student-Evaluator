@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
 
 // Debug line to verify session contents (remove or comment out in production)
 echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
