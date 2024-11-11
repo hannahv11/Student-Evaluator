@@ -118,4 +118,4 @@ with XAMPP running (especially for PHP functionality testing,)
 3. When the blank query textbox pops up, paste this:
 
 "ALTER TABLE `users` ADD INDEX(`first_name`);"
-"ALTER TABLE `users` ADD INDEX("last_name`);"
+"ALTER TABLE `users` ADD INDEX(`last_name`);"
