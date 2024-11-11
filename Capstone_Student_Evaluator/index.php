@@ -5,43 +5,36 @@ include 'active_user.php';
 
 //check if user is logged in
 if (!isset($_SESSION['id']) || !isset($_SESSION['role'])) {
-    //Redirect if not logged in. Page only accessible if logged in.
+	//Redirect if not logged in. Page only accessible if logged in.
     header("Location: login.php");
     exit;
 }
 
+//finds users team_id through the teams table in DB.
+//Uses SQL Query to match team ID to student ID
+$user_id = $_SESSION['id'];
+$team_id_search = "SELECT team_id FROM teams WHERE student_id = :user_id";
+$team_stmt = $pdo->prepare($team_id_search);
+$team_stmt->execute(['user_id' => $user_id]);
+$user_team = $team_stmt->fetch(PDO::FETCH_ASSOC);
 
-//fetches created users from the db to write a review on. Must be student roles
+//Fetches students within same team as the user making a review
+//Displays students within team as an array. Students within same team
+//can now only appear in dropdown selection for reviewing
 $students = [];
-$sql = "SELECT id, first_name, last_name FROM users WHERE role = 'student'";
-$result = $pdo->query($sql);
-
-if ($result) {
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $students[] = $row;
-    }
+if ($user_team) {
+    $team_id = $user_team['team_id'];
+    $sql = "SELECT users.id, users.first_name, users.last_name
+            FROM users
+            JOIN teams ON users.id = teams.student_id
+            WHERE users.role = 'student' AND teams.team_id = :team_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['team_id' => $team_id]);
+    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
-// checks and displays active user
-$user_id = $_SESSION['id'];
-$stmt = $pdo->prepare("SELECT  first_name, last_name FROM users WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $active_user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$_SESSION['first_name'] = $active_user['first_name'];
-$_SESSION['last_name'] = $active_user['last_name'];
-
-
-	//USED DURING TESTING:
-// Redirect based on role
-//if ($_SESSION['role'] === 'student') {
-//    header('Location: student.php');
-//} elseif ($_SESSION['role'] === 'instructor') {
-//    header('Location: faculty.php');
-//}
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,13 +46,13 @@ $_SESSION['last_name'] = $active_user['last_name'];
 <!-- CALCULATION SCRIPT TEMPORARILY DELETED, was interfering with submission -->
 
 	<div class="topnav">
-  <a class="active" href="home_page.html">Home</a>
-  <a href="index.php">Peer Review Form</a>
-  <a href="signup.php">Register</a>
-  <a href="faculty.php">Faculty</a>
-  <a href="student.php">Student</a>
-  <a href="login.php">Login</a>
-</div>
+  		<a class="active" href="home_page.html">Home</a>
+		<a href="index.php">Peer Review Form</a>
+		<a href="signup.php">Register</a>
+		<a href="faculty.php">Faculty</a>
+		<a href="student.php">Student</a>
+		<a href="login.php">Login</a>
+	</div>
 </head>
 <body>
     <h1>Peer Review</h1>
@@ -67,7 +60,7 @@ $_SESSION['last_name'] = $active_user['last_name'];
     <p>Grade each question on a scale of 1 to 20 in the drop-down list. <br> Please also add any other comments.</p>
 
     <form method="post" action="submission_script.php">
-        <input type="hidden" name="student_id" value="<?php echo $_SESSION['id']; ?>"> <!-- Set student ID from session -->
+        <input type="hidden" name="student_id" value="<?php echo $_SESSION['user_id']; ?>"> <!-- Set student ID from session -->
 
         <label for="peer">Pick a Classmate for Review</label>
         <select id="peer" name="review_id" required>
