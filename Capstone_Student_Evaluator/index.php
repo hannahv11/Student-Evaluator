@@ -46,12 +46,12 @@ if ($user_team) {
 <!-- CALCULATION SCRIPT TEMPORARILY DELETED, was interfering with submission -->
 
 	<div class="topnav">
-  		<a class="active" href="home_page.html">Home</a>
 		<a href="index.php">Peer Review Form</a>
 		<a href="signup.php">Register</a>
 		<a href="faculty.php">Faculty</a>
 		<a href="student.php">Student</a>
 		<a href="login.php">Login</a>
+		<a href="logout.php>Logout</a>
 	</div>
 </head>
 <body>
