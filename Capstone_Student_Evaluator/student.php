@@ -3,6 +3,7 @@ session_start();
 include 'db_connection.php';
 include 'active_user.php';
 
+
 // Debug line to verify session contents (remove or comment out in production)
 echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
 
@@ -12,8 +13,6 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
    header("Location: login.php");
    exit;
 }
-
-//Need code for students to view their already submitted reviews?
 
 ?>
 
@@ -43,35 +42,32 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
 
 <header>
 <div class="topnav">
-  <a class="active" href="home_page.html">Home</a>
   <a href="index.php">Peer Review Form</a>
   <a href="register.php">Register</a>
   <a href="faculty.php">Faculty</a>
   <a href="student.php">Student</a>
   <a href="login.php">Login</a>
+  <a href="logout.php">Logout</a>
+
 </div>
 </header>
 
     <h1>Student</h1>
-	
-		<form method="post">	
 		
-		<label for="peer">Pick a classmate to view your review for them</label>
-			<select id="peer" name="peer">
-				<option value="Hannah">Hannah</option>
-				<option value="Josh">Josh</option>
-				<option value="Piper">Piper</option>
-			</select><br><br>
-		<button type="submit" id = "submit" value="Submit">View Review</button>
-		
+	<form method="post" action="student_view.php">	
+		<label for="peer">View Past Reviews You Have Written</label>
+		<br>
+		<input type="hidden" name="action" value="view_review">
+		<button type="submit" id="view" value="view">View Reviews</button>	
 	</form>
+	
 	<br><br>
-	<form method="post" action="index.php"> <!-- Ensure action points to the correct file handling review submissions -->
-    <label for="peer">Write a review for a classmate</label>
-    <br>
-    <input type="hidden" name="action" value="write_review"> <!-- Hidden field to identify action -->
-    <button type="submit" id="submit" value="Submit">Write Review</button>
-</form>
+	<form method="post" action="index.php"> 
+		<label for="peer">Write A Review For A Classmate</label>
+		<br>
+		<input type="hidden" name="action" value="write_review"> 
+		<button type="submit" id="submit" value="Submit">Write Review</button>
+	</form>
 
    <footer>
    </footer>
