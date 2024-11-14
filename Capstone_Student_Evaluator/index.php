@@ -51,7 +51,7 @@ if ($user_team) {
 		<a href="faculty.php">Faculty</a>
 		<a href="student.php">Student</a>
 		<a href="login.php">Login</a>
-		<a href="logout.php>Logout</a>
+		<a href="logout.php">Logout</a>
 	</div>
 </head>
 <body>
