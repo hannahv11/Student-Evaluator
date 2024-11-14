@@ -47,7 +47,7 @@ function getReviewedStudentName($pdo, $reviewed_id) {
 
 <header>
 <div class="topnav">
-  <a href="index.html">Peer Review Form</a>
+  <a href="index.php">Peer Review Form</a>
   <a href="register.php">Register</a>
   <a href="faculty.php">Faculty</a>
   <a href="student.php">Student</a>
