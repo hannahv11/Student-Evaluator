@@ -43,7 +43,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
 <header>
 <div class="topnav">
   <a href="index.php">Peer Review Form</a>
-  <a href="register.php">Register</a>
+  <a href="signup.php">Register</a>
   <a href="faculty.php">Faculty</a>
   <a href="student.php">Student</a>
   <a href="login.php">Login</a>
