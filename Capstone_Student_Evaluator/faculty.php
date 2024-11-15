@@ -1,6 +1,8 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
+
 
 //checks if logged in user is faculty. If not you're brought back to login
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'instructor') {
@@ -36,9 +38,7 @@ if ($result) {
     
    <title>Faculty</title>
    <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="calculation.js" defer></script>
-	
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />	
   <link rel = "stylesheet" href="form.css">
   <link rel = "stylesheet" href="navigation.css">
 
@@ -61,8 +61,8 @@ if ($result) {
     <h1>Faculty</h1>
 	
 	<form action="generatePDF.php" method="post">	
-		<label for="report">Pick a Student to Generate their PDF Report</label>
-        <select id="peer" name="review_id" required>
+		<label for="generate_reports">Pick a Student to Generate their PDF Report</label>
+        <select id="student_reports" name="review_id" required>
             <option value="">Select a student...</option>
 			<!-- Retrieves student users from db for selection-->
             <?php foreach ($students as $student): ?>
@@ -77,8 +77,8 @@ if ($result) {
 	<br><br>
 	
 	<form action="view.php" method="post">	
-		<label for="review">Pick a Student to View their Reviews</label>
-        <select id="peer" name="student_id" required>
+		<label for="view_reviews">Pick a Student to View their Reviews</label>
+        <select id="student_review" name="student_id" required>
             <option value="">Select a student...</option>
 			<!-- Retrieves student users from db for selection-->
             <?php foreach ($students as $student): ?>
@@ -90,6 +90,23 @@ if ($result) {
 		<button type="submit" id = "view_reviews" value="view_reviews">View Reviews</button>
 		
 	</form>
+	
+	<br><br>
+	<form method="post" action="generate_ids.php"> 
+		<label for="generate_id">Generate the Student IDs into an Excel Spreadsheet</label>
+		<br>
+		<input type="hidden" name="action" value="generate_id"> 
+		<button type="submit" id="generate_id" value="generate_id">Generate IDs</button>
+	</form>
+
+	<br><br>
+	<form method="post" action="upload_teams.php"> 
+		<label for="upload">Use an Excel Spreadsheet to Upload Groups</label>
+		<br>
+		<input type="hidden" name="action" value="upload"> 
+		<button type="submit" id="upload" value="upload">Upload Groups</button>
+	</form>
+	
    <footer>
    </footer>
 </body>
