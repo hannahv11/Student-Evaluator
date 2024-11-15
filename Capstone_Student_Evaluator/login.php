@@ -31,12 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
 	<title>Login</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel = "stylesheet" href="navigation.css">
 	<link rel = "stylesheet" href="signup.css">
 </head>
 
 <body>
-
+<header>
 <div class="topnav">
   <a href="index.php">Peer Review Form</a>
   <a href="signup.php">Register</a>
@@ -54,10 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<h1>Login</h1>
 			
 		<label for="username">Username:</label>
-			<input id="text" type="text" name="username"><br><br>
+			<input id="username" type="text" name="username"><br><br>
 			
 		<label for="password">Password:</label>
-			<input id="text" type="password" name="password"><br><br>
+			<input id="password" type="password" name="password"><br><br>
 
 			<input id="button" type="submit" value="Login"><br><br>
 
