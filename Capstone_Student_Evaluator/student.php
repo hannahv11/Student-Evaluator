@@ -5,7 +5,7 @@ include 'active_user.php';
 
 
 // Debug line to verify session contents (remove or comment out in production)
-echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
+//echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
 
 //checks if current login is student role
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
@@ -55,7 +55,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
     <h1>Student</h1>
 		
 	<form method="post" action="student_view.php">	
-		<label for="peer">View Past Reviews You Have Written</label>
+		<label for="view">View Past Reviews You Have Written</label>
 		<br>
 		<input type="hidden" name="action" value="view_review">
 		<button type="submit" id="view" value="view">View Reviews</button>	
@@ -63,7 +63,7 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
 	
 	<br><br>
 	<form method="post" action="index.php"> 
-		<label for="peer">Write A Review For A Classmate</label>
+		<label for="submit">Write A Review For A Classmate</label>
 		<br>
 		<input type="hidden" name="action" value="write_review"> 
 		<button type="submit" id="submit" value="Submit">Write Review</button>
