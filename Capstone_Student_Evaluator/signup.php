@@ -89,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <html>
 <head>
 	<title>Signup</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel = "stylesheet" href="navigation.css">
 	<link rel = "stylesheet" href="signup.css">
 
@@ -96,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
-
+<header>
 <div class="topnav">
   <a href="index.php">Peer Review Form</a>
   <a href="signup.php">Register</a>
@@ -115,16 +117,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 			<h1>Sign Up</h1>
 		
 		<label for="first_name">First Name:</label>
-	       <input id="text" type="text" name="first_name"><br><br>
+	       <input id="first_name" type="text" name="first_name"><br><br>
 		
 		<label for="last_name">Last Name:</label>
-			<input id="text" type="text" name="last_name"><br><br>
+			<input id="last_name" type="text" name="last_name"><br><br>
 			
         <label for="username">Username:</label>
-			<input id="text" type="text" name="username"><br><br>
+			<input id="username" type="text" name="username"><br><br>
 		
 		<label for="password">Password:</label>
-			<input id="text" type="password" name="password"><br><br>
+			<input id="password" type="password" name="password"><br><br>
 
 			<input id="button" type="submit" name="submit" value="Sign Up"><br><br>
 
