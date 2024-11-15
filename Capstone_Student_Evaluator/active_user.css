@@ -1,0 +1,13 @@
+#login_status {
+  background-color: #474741;
+  color: white; 
+  text-align: left; 
+  padding-left: 20px; 
+  padding-right: 20px; 
+  padding-top: 12px; 
+  padding-bottom: 12px; 
+  font-size: 17px; 
+  font-family: Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box; 
+}
