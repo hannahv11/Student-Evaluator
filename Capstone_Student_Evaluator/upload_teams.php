@@ -1,4 +1,7 @@
 <?php
+session_start();
+include 'active_user.php';
+
 //Importing required libraries, now includes PHPSpreadsheet library files
 require 'db_connection.php';
 require 'vendor/autoload.php';
@@ -61,11 +64,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Upload Teams through spreadsheet</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel = "stylesheet" href="navigation.css">
+	<link rel = "stylesheet" href="upload.css">
 </head>
+
 <body>
-    <h1>Upload Team Assignments file</h1>
+<header>
+<div class="topnav">
+  <a href="index.php">Peer Review Form</a>
+  <a href="signup.php">Register</a>
+  <a href="faculty.php">Faculty</a>
+  <a href="student.php">Student</a>
+  <a href="login.php">Login</a>
+  <a href="logout.php">Logout</a>
+</div>
+</header>
+    <h1>Upload Team Assignments</h1>
     <form action="upload_teams.php" method="post" enctype="multipart/form-data">
         <label for="excel_file">Select Excel File:</label>
         <input type="file" name="excel_file" id="excel_file" required>
