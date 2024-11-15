@@ -18,7 +18,10 @@ if (isset($_SESSION['id'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<link rel = "stylesheet" href="active_user.css">
     <div id="login_status">
         <?php 
             if (isset($_SESSION['id'])) {
