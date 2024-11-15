@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
 
 // user login
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'instructor') {
