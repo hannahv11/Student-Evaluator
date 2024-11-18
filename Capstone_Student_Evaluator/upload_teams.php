@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel = "stylesheet" href="navigation.css">
 	<link rel = "stylesheet" href="upload.css">
+    <link rel = "stylesheet" href="mobile.css">
 </head>
 
 <body>

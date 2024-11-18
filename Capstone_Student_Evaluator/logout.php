@@ -18,6 +18,7 @@ exit;
 	<title>Logout</title>
 	<link rel = "stylesheet" href="navigation.css">
 	<link rel = "stylesheet" href="signup.css">
+  <link rel = "stylesheet" href="mobile.css">
 </head>
 
 <body>

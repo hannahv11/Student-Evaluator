@@ -21,15 +21,21 @@ $user_team = $team_stmt->fetch(PDO::FETCH_ASSOC);
 //Fetches students within same team as the user making a review
 //Displays students within team as an array. Students within same team
 //can now only appear in dropdown selection for reviewing
+//Excludes the already logged in user
 $students = [];
 if ($user_team) {
     $team_id = $user_team['team_id'];
     $sql = "SELECT users.id, users.first_name, users.last_name
             FROM users
             JOIN teams ON users.id = teams.student_id
-            WHERE users.role = 'student' AND teams.team_id = :team_id";
+            WHERE users.role = 'student' 
+              AND teams.team_id = :team_id 
+              AND users.id != :loggedInId";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['team_id' => $team_id]);
+    $stmt->execute([
+        'team_id' => $team_id,
+        'loggedInId' => $_SESSION['id'],
+    ]);
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -43,7 +49,7 @@ if ($user_team) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="form.css">
     <link rel="stylesheet" href="navigation.css">
-<!-- CALCULATION SCRIPT TEMPORARILY DELETED, was interfering with submission -->
+	<link rel = "stylesheet" href="mobile.css">
 
 	<div class="topnav">
 		<a href="index.php">Peer Review Form</a>
@@ -96,7 +102,7 @@ if ($user_team) {
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <textarea id="Q1TB" name="Q1TB" rows="4" cols="50"></textarea><br>	 
+        <textarea maxlength = "450" id="Q1TB" name="Q1TB" rows="4" cols="50"></textarea><br>	 
 		
 		
 		<label for="Q2">Team member assignments were handed in, in a timely manner:</label><br>
@@ -122,7 +128,7 @@ if ($user_team) {
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <textarea id="Q2TB" name="Q2TB" rows="4" cols="50"></textarea><br>
+        <textarea maxlength = "450" id="Q2TB" name="Q2TB" rows="4" cols="50"></textarea><br>
 		
 		<label for="Q3">Team member produced quality work:</label><br>
 		<select id="Q3" name="Q3">
@@ -147,7 +153,7 @@ if ($user_team) {
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <textarea id="Q3TB" name="Q3TB" rows="4" cols="50"></textarea><br>
+        <textarea maxlength = "450" id="Q3TB" name="Q3TB" rows="4" cols="50"></textarea><br>
 		
 		<label for="Q4">Group interaction was professional and respectful:</label><br>
 		<select id="Q4" name="Q4">
@@ -172,7 +178,7 @@ if ($user_team) {
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-        <textarea id="Q4TB" name="Q4TB" rows="4" cols="50"></textarea><br>
+        <textarea maxlength = "450" id="Q4TB" name="Q4TB" rows="4" cols="50"></textarea><br>
 
 		
 		<label for="Q5">Team member willingly engaged:</label><br>
@@ -198,26 +204,10 @@ if ($user_team) {
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-		<textarea id="Q5TB" name="Q5TB" rows="4" cols="50"></textarea><br>
+		<textarea maxlength = "450" id="Q5TB" name="Q5TB" rows="4" cols="50"></textarea><br>
 		
 		<input type="reset" value="Reset">
 		<input type="submit" id = "submit" value="Submit">
-
-		<!-- For testing, delete later -->
-		<p>Score 1: </p>
-		<p id="score1"></p>
-		<p>Score 2: </p>
-		<p id="score2"></p>
-		<p>Score 3: </p>
-		<p id="score3"></p>
-		<p>Score 4: </p>
-		<p id="score4"></p>
-		<p>Score 5: </p>
-		<p id="score5"></p>
-		<p>Sum: </p>
-		<p id="sum"></p>
-		<p>Average Score: </p>
-		<p id="average"></p>
 
 	</form>
    

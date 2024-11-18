@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 
 //check if logged in
 if (!isset($_SESSION['id'])) {
-    echo "Error: User is not logged in.";
+    header("Location: login.php?error=not_logged_in");
     exit;
 }
 
@@ -34,7 +34,7 @@ try {
     $review_check->execute([$review_id]);
     
     if ($review_check->fetchColumn() == 0) {
-        echo "Error: Invalid review ID selected.";
+        header("Location: student.php?error=invalid_review_id");
         exit;
     }
 
@@ -42,9 +42,8 @@ try {
     $sql = "INSERT INTO submissions 
         (review_id, student_id, q1_rating, q1_comment, q2_rating, q2_comment, q3_rating, q3_comment, q4_rating, q4_comment, q5_rating, q5_comment) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    //uses PHP data objects for submission
-    $stmt = $pdo->prepare($sql);    //'prepare' prevents SQL injections
-    $stmt->bindParam(1, $review_id, PDO::PARAM_INT);    //binds variables to parameters
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(1, $review_id, PDO::PARAM_INT);
     $stmt->bindParam(2, $student_id, PDO::PARAM_INT);
     $stmt->bindParam(3, $q1_rating, PDO::PARAM_INT);
     $stmt->bindParam(4, $q1_comment, PDO::PARAM_STR);
@@ -56,14 +55,17 @@ try {
     $stmt->bindParam(10, $q4_comment, PDO::PARAM_STR);
     $stmt->bindParam(11, $q5_rating, PDO::PARAM_INT);
     $stmt->bindParam(12, $q5_comment, PDO::PARAM_STR);
-    //runs SQL statement with bound parameters
+    
     if ($stmt->execute()) {
-        echo "Review submitted.";
+        //redirects to student.php instead of a plain text message
+        header("Location: student.php?success=review_submitted");
+        exit;
     } else {
-        echo "Error: could not submit review properly.";
+        header("Location: student.php?error=submit_failed");
+        exit;
     }
-    //error handling
 } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    header("Location: student.php?error=" . urlencode($e->getMessage()));
+    exit;
 }
 ?>

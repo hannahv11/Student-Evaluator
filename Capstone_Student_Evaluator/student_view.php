@@ -3,8 +3,7 @@ session_start();
 include 'db_connection.php';
 include 'active_user.php';
 
-
-// Check if user is logged in and is a student
+//check if user is logged in as a student
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
     header("Location: login.php");
     exit;
@@ -34,6 +33,7 @@ function getReviewedStudentName($pdo, $reviewed_id) {
     <title>Your Past Reviews</title>
     <link rel="stylesheet" href="navigation.css">
 	<link rel="stylesheet" href="view.css">
+    <link rel = "stylesheet" href="mobile.css">
 </head>
 
 <body>

@@ -41,8 +41,9 @@ function getReviewedStudentName($pdo, $reviewed_id) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews Written by <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></title>
-  <link rel = "stylesheet" href="navigation.css">
+    <link rel = "stylesheet" href="navigation.css">
     <link rel = "stylesheet" href="view.css">
+    <link rel = "stylesheet" href="mobile.css">
 </head>
 <body>
 

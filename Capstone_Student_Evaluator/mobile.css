@@ -1,0 +1,58 @@
+/* styling for larger screen mobile devices like tablets */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    form, article, table {
+        max-width: 100%;
+        margin: 0;
+        padding: 15px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input, select, textarea {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .topnav a {
+        float: none;
+        display: block;
+        text-align: center;
+    }
+
+    footer {
+        font-size: 12px;
+    }
+}
+
+/* styling for small screen devices such as phones */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    input[type="submit"], input[type="reset"] {
+        font-size: 12px;
+    }
+
+    .topnav {
+        padding: 10px;
+    }
+}
