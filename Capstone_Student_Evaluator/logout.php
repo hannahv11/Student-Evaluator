@@ -18,21 +18,21 @@ exit;
 	<title>Logout</title>
 	<link rel = "stylesheet" href="navigation.css">
 	<link rel = "stylesheet" href="signup.css">
-  <link rel = "stylesheet" href="mobile.css">
+	<link rel = "stylesheet" href="mobile.css">
+
 </head>
 
 <body>
+	<header>
+	<div class="topnav">
+	<a href="index.php">Peer Review Form</a>
+	<a href="signup.php">Register</a>
+	<a href="faculty.php">Faculty</a>
+	<a href="student.php">Student</a>
+	<a href="login.php">Login</a>
+	<a href="logout.php">Logout</a>
+	</div>
+	</header>
 
-<div class="topnav">
-  <a href="index.php">Peer Review Form</a>
-  <a href="signup.php">Register</a>
-  <a href="faculty.php">Faculty</a>
-  <a href="student.php">Student</a>
-  <a href="login.php">Login</a>
-  <a href="logout.php">Logout</a>
-</div>
-</header>
-
-<body>
 </body>
 </html>
