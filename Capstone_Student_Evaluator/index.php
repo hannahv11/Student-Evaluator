@@ -49,8 +49,11 @@ if ($user_team) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="form.css">
     <link rel="stylesheet" href="navigation.css">
-	<link rel = "stylesheet" href="mobile.css">
+    <link rel = "stylesheet" href="mobile.css">
 
+</head>
+<body>
+<header>
 	<div class="topnav">
 		<a href="index.php">Peer Review Form</a>
 		<a href="signup.php">Register</a>
@@ -59,14 +62,13 @@ if ($user_team) {
 		<a href="login.php">Login</a>
 		<a href="logout.php">Logout</a>
 	</div>
-</head>
-<body>
+</header>
     <h1>Peer Review</h1>
     <p>Please fill out this peer review form for each one of your team mates.</p>
     <p>Grade each question on a scale of 1 to 20 in the drop-down list. <br> Please also add any other comments.</p>
 
     <form method="post" action="submission_script.php">
-        <input type="hidden" name="student_id" value="<?php echo $_SESSION['user_id']; ?>"> <!-- Set student ID from session -->
+        <input type="hidden" name="student_id" value="<?php echo $_SESSION['id']; ?>"> <!-- Set student ID from session -->
 
         <label for="peer">Pick a Classmate for Review</label>
         <select id="peer" name="review_id" required>
@@ -206,8 +208,8 @@ if ($user_team) {
 		</select>
 		<textarea maxlength = "450" id="Q5TB" name="Q5TB" rows="4" cols="50"></textarea><br>
 		
-		<input type="reset" value="Reset">
-		<input type="submit" id = "submit" value="Submit">
+		<button type="reset" value="Reset">Reset</button>
+		<button type="submit" id = "submit" value="Submit">Submit</button>
 
 	</form>
    
