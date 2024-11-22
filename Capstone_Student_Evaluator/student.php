@@ -4,31 +4,39 @@ include 'db_connection.php';
 include 'active_user.php';
 
 // Debug line to verify session contents (remove or comment out in production)
-//echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
+// echo "Session ID: " . (isset($_SESSION['id']) ? $_SESSION['id'] : "Not set") . " | Role: " . (isset($_SESSION['role']) ? $_SESSION['role'] : "Not set") . "<br>";
 
-//checks if current login is student role
+// Checks if current login is student role
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'student') {
-   //sends you back to login if not, or logged in as faculty
-   header("Location: login.php");
-   exit;
+    // Sends you back to login if not logged in as student or logged in as faculty
+    header("Location: login.php");
+    exit;
 }
 
-//Retrieves the success message upon submitting review
+// Retrieves the success message upon submitting review
 $submissionMessage = isset($_GET['success']) && $_GET['success'] === 'review_submitted' ? 'Review successfully submitted!' : '';
+
+// Error message for existing review
+$errorMessage = '';
+if (isset($_GET['error']) && $_GET['error'] === 'review_exists') {
+    $errorMessage = 'You have already submitted a review for this classmate.';
+}
+
+// Fetch reviews written by the student
+$student_id = $_SESSION['id'];
+$query = "SELECT submissions.*, users.first_name AS reviewed_first_name, users.last_name AS reviewed_last_name
+          FROM submissions
+          JOIN users ON submissions.review_id = users.id
+          WHERE submissions.student_id = ?";
+$stmt = $pdo->prepare($query);
+$stmt->execute([$student_id]);
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <!--
-    
-    ATC Peer Review Project
-    Author: Piper Noll, Hannah Vorel, Josh Vang
-    Date: 10/15/2024  
-
-    Filename: student.php
-   -->
-    
    <title>Student</title>
    <meta charset="utf-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,6 +50,14 @@ $submissionMessage = isset($_GET['success']) && $_GET['success'] === 'review_sub
            font-size: 1.5em;
            font-weight: bold;
            color: darkgreen;
+       }
+
+       .error { /* Error message styling */
+           margin: 50px auto;
+           text-align: center;
+           font-size: 1.5em;
+           font-weight: bold;
+           color: rgb(215, 71, 63);
        }
    </style>
 </head>
@@ -67,22 +83,38 @@ $submissionMessage = isset($_GET['success']) && $_GET['success'] === 'review_sub
     </div>
 <?php endif; ?>
 
-<form method="post" action="student_view.php">	
-    <label for="view">View Past Reviews You Have Written</label>
-    <br>
-    <input type="hidden" name="action" value="view_review">
-    <button type="submit" id="view" value="view">View Reviews</button>	
-</form>
+<!-- Display error message if review already exists -->
+<?php if ($errorMessage): ?>
+    <div class="error">
+        <?php echo $errorMessage; ?>
+    </div>
+<?php endif; ?>
 
-<br><br>
-<form method="post" action="index.php"> 
+<!-- Button to write a new review -->
+<form method="post" action="index.php">
     <label for="submit">Write A Review For A Classmate</label>
     <br>
-    <input type="hidden" name="action" value="write_review"> 
+    <input type="hidden" name="action" value="write_review">
     <button type="submit" id="submit" value="Submit">Write Review</button>
 </form>
 
-<footer>
-</footer>
+<br><br>
+
+<!-- Form to select and view past reviews -->
+<?php if ($reviews): ?>
+    <form method="get" action="edit_reviews.php">
+        <label for="review">Edit Past Reviews You Have Written</label><br>
+        <select id="review" name="review_id" required>
+            <option value="">--Select a review--</option>
+            <?php foreach ($reviews as $review): ?>
+                <option value="<?= $review['review_id'] ?>">
+                    <?= htmlspecialchars($review['reviewed_first_name'] . ' ' . $review['reviewed_last_name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
+    <button type="submit" value="Edit Selected Review">Edit Selected Review</button>
+    </form>
+<?php endif; ?>
+
 </body>
 </html>
