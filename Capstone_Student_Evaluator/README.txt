@@ -119,3 +119,12 @@ with XAMPP running (especially for PHP functionality testing,)
 
 "ALTER TABLE `users` ADD INDEX(`first_name`);"
 "ALTER TABLE `users` ADD INDEX(`last_name`);"
+
+
+
+****Edits to stop users from submitting multiple reviews
+1. Go to the database and go to the SQL tab to edit the table.
+2. Copy the following code
+ALTER TABLE submissions
+   ADD CONSTRAINT unique_review_per_student UNIQUE (student_id, review_id);
+3. Submit and it should prevent users from being able to submit another review for a student they have already submitted for.
