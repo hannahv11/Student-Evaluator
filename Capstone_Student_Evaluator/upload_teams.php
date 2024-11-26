@@ -19,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
         try {
             $spreadsheet = IOFactory::load($file);
             $worksheet = $spreadsheet->getActiveSheet();
-            //Starts on first row of excel file
-            $rowIterator = $worksheet->getRowIterator(1);
+            //Starts on second row of excel file as to skip the header text from downloadable excel spreadsheet
+            $rowIterator = $worksheet->getRowIterator(2);
             //loops through each row
             foreach ($rowIterator as $rowIndex => $row) {
                 //reads values from each row
