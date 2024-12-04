@@ -86,14 +86,13 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 <header>
-<div class="topnav">
-  <a href="index.php">Peer Review Form</a>
-  <a href="signup.php">Register</a>
-  <a href="faculty.php">Faculty</a>
-  <a href="student.php">Student</a>
-  <a href="login.php">Login</a>
-  <a href="logout.php">Logout</a>
-</div>
+    <div class="topnav">
+        <a href="signup.php">Register</a>
+        <a href="faculty.php">Faculty</a>
+        <a href="student.php">Student</a>
+        <a href="login.php">Login</a>
+        <a href="logout.php">Logout</a>
+    </div>
 </header>
 
 <h1>Student Menu</h1>
@@ -107,21 +106,21 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!-- Displays the student's current group -->
 <?php if ($currentTeam): ?>
-    <p>You are currently part of group: <?= htmlspecialchars($currentTeam['team_name']) ?></p>
+    <p>You are currently part of the following group: <?= htmlspecialchars($currentTeam['team_name']) ?></p>
 <?php else: ?>
     <p>You do not belong to a group yet. Please join a group in order to write reviews.</p>
     <?php if ($availableTeams): ?>
         <!-- form to join a group if not already assigned -->
         <form method="post" action="join_team.php">
             <label for="team">Select a Group:</label>
-            <select id="team" name="team_id" required>
-                <option value="">--Select a Group--</option>
-                <?php foreach ($availableTeams as $team): ?>
-                    <option value="<?= htmlspecialchars($team['team_id']) ?>">
-                        <?= htmlspecialchars($team['team_name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select><br><br>
+                <select id="team" name="team_id" required>
+                    <option value="">--Select a Group--</option>
+                    <?php foreach ($availableTeams as $team): ?>
+                        <option value="<?= htmlspecialchars($team['team_id']) ?>">
+                            <?= htmlspecialchars($team['team_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select><br><br>
             <button type="submit">Join Group</button>
         </form>
     <?php else: ?>
@@ -157,14 +156,14 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php if ($reviews): ?>
     <form method="get" action="edit_reviews.php">
         <label for="review">Edit Past Reviews You Have Written</label><br>
-        <select id="review" name="review_id" required>
-            <option value="">--Select a review--</option>
-            <?php foreach ($reviews as $review): ?>
-                <option value="<?= $review['review_id'] ?>">
-                    <?= htmlspecialchars($review['reviewed_first_name'] . ' ' . $review['reviewed_last_name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select><br><br>
+            <select id="review" name="review_id" required>
+                <option value="">--Select a review--</option>
+                <?php foreach ($reviews as $review): ?>
+                    <option value="<?= $review['review_id'] ?>">
+                        <?= htmlspecialchars($review['reviewed_first_name'] . ' ' . $review['reviewed_last_name']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br><br>
         <button type="submit">Edit Selected Review</button>
     </form>
 <?php endif; ?>

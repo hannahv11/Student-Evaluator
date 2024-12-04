@@ -1,15 +1,15 @@
 <?php
 session_start();
 include 'db_connection.php';
-require('fpdf/fpdf.php'); 
+require('fpdf/fpdf.php'); //uses fpdf library files
 
-// User login
+//Checks user login and if role is instructor
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'instructor') {
     header("Location: login.php");
     exit;
 }
 
-// gets the name of the student
+//gets the name of the student
 $review_id = $_POST['review_id'];
 $stmt_student = $pdo->prepare("SELECT first_name, last_name FROM users WHERE id = :id");
 $stmt_student->execute(['id' => $review_id]);
@@ -28,11 +28,11 @@ $pdf->SetFont('Arial', 'B', 16);
 $pdf->Cell(0, 10, 'Peer Review Report for ' . htmlspecialchars($student['first_name'] . ' ' . $student['last_name']), 0, 1, 'C');
 $pdf->Ln(10);
 
-// Sees if there are reviews for the student if so report is generated
+//Sees if there are reviews for the student if so report is generated
 if (empty($reviews)) {
     $pdf->Cell(0, 10, "No reviews found for this student.", 0, 1);
 } else {
-    // average of scores  
+    //displays average of scores  
     $average_ratings = [];
     
     foreach ($reviews as $review) {
@@ -40,15 +40,15 @@ if (empty($reviews)) {
         $average_ratings[] = $average_rating;
     }
     
-    // Calculate the overall average rating
+    //calculate the overall average rating
     $overall_average = array_sum($average_ratings) / count($average_ratings);
 
-    
+    //sets formatting info
     $pdf->SetFont('Arial', 'B', 12);
     $pdf->Cell(0, 10, 'Overall Average Rating: ' . number_format($overall_average, 2), 0, 1, 'C');
     $pdf->Ln(5); 
 
-    // Scores Table
+    //displays scores Table
     $pdf->SetFont('Arial', 'B', 12); 
     $pdf->Cell(32, 10, 'Average Score', 1);
     $pdf->Cell(20, 10, 'Q1 Score', 1);
@@ -61,7 +61,7 @@ if (empty($reviews)) {
     $pdf->SetFont('Arial', '', 11); 
     
     foreach ($reviews as $review) {
-        // average for review
+        //displays average for review
         $average_rating = ($review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating']) / 5;
 
         $pdf->Cell(32, 10, number_format($average_rating, 2), 1);
@@ -78,7 +78,7 @@ if (empty($reviews)) {
     $pdf->Cell(0, 10, 'Comments from Reviews', 0, 1);
     $pdf->Ln(5); 
 
-    // Comments section
+    //displays comments section
     $pdf->SetFont('Arial', '', 11); 
     foreach ($reviews as $review) {
         $pdf->SetFont('Arial', 'B', 11); 

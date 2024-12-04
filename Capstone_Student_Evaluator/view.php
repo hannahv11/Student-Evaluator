@@ -38,87 +38,90 @@ function getReviewedStudentName($pdo, $reviewed_id) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+    
+	ATC Peer Review Project
+    Author: Piper Noll, Hannah Vorel, Josh Vang
+    Date: 10/15/2024  
+
+    Filename: view.php
+   -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews Written by <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></title>
-    <link rel = "stylesheet" href="navigation.css">
-    <link rel = "stylesheet" href="view.css">
-    <link rel = "stylesheet" href="mobile.css">
+        <title>Reviews Written by <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></title>
+            <link rel = "stylesheet" href="navigation.css">
+            <link rel = "stylesheet" href="view.css">
+            <link rel = "stylesheet" href="mobile.css">
 </head>
 <body>
-
-<header>
-<div class="topnav">
-  <a href="index.php">Peer Review Form</a>
-  <a href="signup.php">Register</a>
-  <a href="faculty.php">Faculty</a>
-  <a href="student.php">Student</a>
-  <a href="login.php">Login</a>
-  <a href="logout.php">Logout</a>
-
-</div>
-</header>
-
-<article>
-<h1>Reviews Written by <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></h1>
-
-<?php if (empty($reviews)): ?>
-    <p>No reviews found for this student.</p>
-<?php else: ?>
-    <table>
-        <thead>
-            <tr>
-                <th>Reviewed Student</th>
-                <th>Review ID</th>
-                <th>Avg Rating</th>
-                <th>Q1 Score</th>
-                <th>Q2 Score</th>
-                <th>Q3 Score</th>
-                <th>Q4 Score</th>
-                <th>Q5 Score</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($reviews as $review): ?>
-                <?php
-                $reviewed_student = getReviewedStudentName($pdo, $review['review_id']); // Assuming review_id refers to the student being reviewed
-                $reviewed_name = htmlspecialchars($reviewed_student['first_name'] . ' ' . $reviewed_student['last_name']);
-                $average_rating = ($review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating']) / 5;
-                ?>
+    <header>
+        <div class="topnav">
+            <a href="signup.php">Register</a>
+            <a href="faculty.php">Faculty</a>
+            <a href="student.php">Student</a>
+            <a href="login.php">Login</a>
+            <a href="logout.php">Logout</a>
+        </div>
+    </header>
+    <article> <!--Fetches selected students name -->
+    <h1>Reviews Written by <?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></h1>
+        <?php if (empty($reviews)): ?> 
+            <p>No reviews found for this student.</p>
+        <?php else: ?> <!--Displays student's review and values -->
+        <table>
+            <thead>
                 <tr>
-                    <td><?php echo $reviewed_name; ?></td>
-                    <td><?php echo htmlspecialchars($review['id']); ?></td>
-                    <td><?php echo number_format($average_rating, 2); ?></td>
-                    <td><?php echo htmlspecialchars($review['q1_rating']); ?></td>
-                    <td><?php echo htmlspecialchars($review['q2_rating']); ?></td>
-                    <td><?php echo htmlspecialchars($review['q3_rating']); ?></td>
-                    <td><?php echo htmlspecialchars($review['q4_rating']); ?></td>
-                    <td><?php echo htmlspecialchars($review['q5_rating']); ?></td>
+                    <th>Reviewed Student</th>
+                    <th>Review ID</th>
+                    <th>Avg Rating</th>
+                    <th>Q1 Score</th>
+                    <th>Q2 Score</th>
+                    <th>Q3 Score</th>
+                    <th>Q4 Score</th>
+                    <th>Q5 Score</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($reviews as $review): ?>
+                    <?php //retrieves ratings to appropriate review from database
+                    $reviewed_student = getReviewedStudentName($pdo, $review['review_id']);
+                    $reviewed_name = htmlspecialchars($reviewed_student['first_name'] . ' ' . $reviewed_student['last_name']);
+                    $average_rating = ($review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating']) / 5;
+                    ?>
+                    <tr>
+                        <td><?php echo $reviewed_name; ?></td>
+                        <td><?php echo htmlspecialchars($review['id']); ?></td>
+                        <td><?php echo number_format($average_rating, 2); ?></td>
+                        <td><?php echo htmlspecialchars($review['q1_rating']); ?></td>
+                        <td><?php echo htmlspecialchars($review['q2_rating']); ?></td>
+                        <td><?php echo htmlspecialchars($review['q3_rating']); ?></td>
+                        <td><?php echo htmlspecialchars($review['q4_rating']); ?></td>
+                        <td><?php echo htmlspecialchars($review['q5_rating']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-    <div class="comments">
-        <h2>Comments from Reviews</h2>
-        <?php foreach ($reviews as $review): ?>
-            <?php
-            $reviewed_student = getReviewedStudentName($pdo, $review['review_id']);
-            $reviewed_name = htmlspecialchars($reviewed_student['first_name'] . ' ' . $reviewed_student['last_name']);
-            ?>
-            <h3>Review ID: <?php echo htmlspecialchars($review['id']); ?></h3>
-            <p><strong>Reviewed Student:</strong> <?php echo $reviewed_name; ?></p>
-            <p><strong>Comments:</strong></p>
-            <ul>
-                <li>Team member participated in team meetings/online discussions: <?php echo htmlspecialchars($review['q1_comment']); ?></li>
-                <li>Team member assignments were handed in, in a timely manner: <?php echo htmlspecialchars($review['q2_comment']); ?></li>
-                <li>Team member produced quality work: <?php echo htmlspecialchars($review['q3_comment']); ?></li>
-                <li>Group interaction was professional and respectful: <?php echo htmlspecialchars($review['q4_comment']); ?></li>
-                <li>Team member willingly engaged: <?php echo htmlspecialchars($review['q5_comment']); ?></li>
-            </ul>
-        <?php endforeach; ?>
-    </div>
-<?php endif; ?>
-</article>
+        <div class="comments">
+            <h2>Comments from Reviews</h2>
+            <?php foreach ($reviews as $review): ?>
+                <?php //retrieves comments and displays text
+                    $reviewed_student = getReviewedStudentName($pdo, $review['review_id']);
+                    $reviewed_name = htmlspecialchars($reviewed_student['first_name'] . ' ' . $reviewed_student['last_name']);
+                ?>
+                <h3>Review ID: <?php echo htmlspecialchars($review['id']); ?></h3>
+                    <p><strong>Reviewed Student:</strong> <?php echo $reviewed_name; ?></p>
+                    <p><strong>Comments:</strong></p>
+                <ul>
+                    <li>Team member participated in team meetings/online discussions: <?php echo htmlspecialchars($review['q1_comment']); ?></li>
+                    <li>Team member assignments were handed in, in a timely manner: <?php echo htmlspecialchars($review['q2_comment']); ?></li>
+                    <li>Team member produced quality work: <?php echo htmlspecialchars($review['q3_comment']); ?></li>
+                    <li>Group interaction was professional and respectful: <?php echo htmlspecialchars($review['q4_comment']); ?></li>
+                    <li>Team member willingly engaged: <?php echo htmlspecialchars($review['q5_comment']); ?></li>
+                </ul>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    </article>
 </body>
 </html>

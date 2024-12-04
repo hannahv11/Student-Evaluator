@@ -1,12 +1,16 @@
 <?php
 session_start();
+include 'db_connection.php';
 include 'active_user.php';
 
 //Importing required libraries, now includes PHPSpreadsheet library files
 require 'db_connection.php';
 require 'vendor/autoload.php';
-// using PHP spreadsheet
+//using PHP spreadsheet library
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
+//variable for checking if data was inserted (was the excel file formatted correctly?)
+$data_inserted = false;
 
 //Handles file upload, checks if its an excel file
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
@@ -36,26 +40,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
                 $cells->next();
                 $team_name = $cells->current()->getValue(); //team_name
 
-                //For debugging purposes. Shows on site if values were read and what was added
-                echo "student_id: $student_id, student_name: $student_name, team_id: $team_id, team_name: $team_name<br>";
-
                 //Checks if required values are missing
                 if (empty($student_id) || empty($student_name) || empty($team_id) || empty($team_name)) {
-                    echo "Skipping invalid row: $student_id, $student_name, $team_id, $team_name<br>";
                     continue; //skips rows with missing data
                 }
 
                 //Prevents duplicate entries if already in database. Doesn't repeat insert
                 $stmt = $pdo->prepare("INSERT IGNORE INTO teams (student_id, team_id, team_name, student_name) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$student_id, $team_id, $team_name, $student_name]);
-                echo "Team ID {$team_id} and student {$student_name} updated successfully.<br>";
+                if ($stmt->execute([$student_id, $team_id, $team_name, $student_name])) {
+                    $data_inserted = true;
+                }
             }
-//catches any errors
-            echo "Teams list updated in database!";
-        } catch (Exception $e) {
+            //displays respective message if excel file was formatted correctly in upload
+            if ($data_inserted) {
+                echo "Teams list successfully updated in Database.";
+            } else {
+                echo "Data uploaded invalid. Nothing was updated";
+            }
+        } catch (Exception $e) { //catches any errors
             echo "Error: " . $e->getMessage();
         }
-    } else {
+    } 
+    else {
         echo "Error uploading file.";
     }
 }
@@ -64,30 +70,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['excel_file'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+    
+	ATC Peer Review Project
+    Author: Piper Noll, Hannah Vorel, Josh Vang
+    Date: 10/15/2024  
+
+    Filename: upload_teams.php
+   -->
     <title>Upload Teams through spreadsheet</title>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel = "stylesheet" href="navigation.css">
-	<link rel = "stylesheet" href="upload.css">
-    <link rel = "stylesheet" href="mobile.css">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel = "stylesheet" href="navigation.css">
+            <link rel = "stylesheet" href="upload.css">
+            <link rel = "stylesheet" href="mobile.css">
 </head>
 
 <body>
-<header>
-<div class="topnav">
-  <a href="index.php">Peer Review Form</a>
-  <a href="signup.php">Register</a>
-  <a href="faculty.php">Faculty</a>
-  <a href="student.php">Student</a>
-  <a href="login.php">Login</a>
-  <a href="logout.php">Logout</a>
-</div>
-</header>
+    <header>
+        <div class="topnav">
+            <a href="signup.php">Register</a>
+            <a href="faculty.php">Faculty</a>
+            <a href="student.php">Student</a>
+            <a href="login.php">Login</a>
+            <a href="logout.php">Logout</a>
+        </div>
+    </header>
     <h1>Upload Team Assignments</h1>
-    <form action="upload_teams.php" method="post" enctype="multipart/form-data">
-        <label for="excel_file">Select Excel File:</label>
-        <input type="file" name="excel_file" id="excel_file" required>
-        <button type="submit">Upload and Import</button>
-    </form>
+        <form action="upload_teams.php" method="post" enctype="multipart/form-data">
+            <label for="excel_file">Select Excel File:</label>
+            <input type="file" name="excel_file" id="excel_file" required>
+            <button type="submit">Upload and Import</button>
+        </form>
 </body>
 </html>

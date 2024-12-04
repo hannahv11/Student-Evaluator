@@ -1,22 +1,18 @@
 <?php
 session_start();
 include 'db_connection.php';
+include 'active_user.php';
 
-// For debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Check if logged in
+//ensures user is logged in
 if (!isset($_SESSION['id'])) {
-    echo "Error: User is not logged in.";
+    echo "Error: User not logged in.";
     exit;
 }
 
-// Retrieve values from the submitted form
-$review_id = $_POST['review_id']; // Set by the dropdown in index.php
-$student_id = $_SESSION['id']; // Set from current logged-in session
+$review_id = $_POST['review_id']; //Set by the dropdown in index.php
+$student_id = $_SESSION['id']; //Set from current logged-in session
 
-// Retrieve ratings and comments
+//retrieves users posted ratings and comments
 $q1_rating = $_POST['Q1'];
 $q1_comment = $_POST['Q1TB'];
 $q2_rating = $_POST['Q2'];
@@ -38,22 +34,23 @@ try {
         exit;
     }
 
-    // Check if the review already exists for the selected student
+    //checks if the review already exists for the selected student
     $checkReviewQuery = "SELECT COUNT(*) FROM submissions WHERE student_id = ? AND review_id = ?";
     $stmt = $pdo->prepare($checkReviewQuery);
     $stmt->execute([$student_id, $review_id]);
 
     if ($stmt->fetchColumn() > 0) {
-        // If review already exists, redirect back to student.php with a message
+        //If review already exists, redirect back to student.php with a message
         header("Location: student.php?error=review_exists");
         exit;
     }
 
-    // Insert the new review into the database
+    //prepares new review to be submitted into submissions table through assigned values
     $sql = "INSERT INTO submissions 
         (review_id, student_id, q1_rating, q1_comment, q2_rating, q2_comment, q3_rating, q3_comment, q4_rating, q4_comment, q5_rating, q5_comment) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
+    //binds new values into submissions table
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(1, $review_id, PDO::PARAM_INT);
     $stmt->bindParam(2, $student_id, PDO::PARAM_INT);
@@ -72,11 +69,11 @@ try {
         //redirects to student.php instead of a plain text message
         header("Location: student.php?success=review_submitted");
         exit;
-    } else {
+    } else { //throws error if submission failed
         header("Location: student.php?error=submit_failed");
         exit;
     }
-} catch (PDOException $e) {
+} catch (PDOException $e) { //exception handling
     header("Location: student.php?error=" . urlencode($e->getMessage()));
     exit;
 }
