@@ -32,44 +32,52 @@ $pdf->Ln(10);
 if (empty($reviews)) {
     $pdf->Cell(0, 10, "No reviews found for this student.", 0, 1);
 } else {
-    //displays average of scores  
-    $average_ratings = [];
+    //calculate maximum total score for each review
+    $maxQScore = 20;
+    $totalQuestions = 5;
+    $maxTotal = $maxQScore * $totalQuestions;
+
+    //store overall total
+    $overallTotal = 0;
+    $existingReviews = count($reviews);
     
     foreach ($reviews as $review) {
-        $average_rating = ($review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating']) / 5;
-        $average_ratings[] = $average_rating;
+        $calculatedScore = $review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating'];
+        $overallTotal += $calculatedScore;
     }
-    
-    //calculate the overall average rating
-    $overall_average = array_sum($average_ratings) / count($average_ratings);
+    //calculates total percentages
+    $totalPercentage = ($overallTotal / ($maxTotal * $existingReviews)) * 100;
 
-    //sets formatting info
+    //outputs display of overall calculated scores
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, 'Overall Average Rating: ' . number_format($overall_average, 2), 0, 1, 'C');
-    $pdf->Ln(5); 
+    $pdf->Cell(0, 10, 'Total Calculated Percentage: ' . number_format($totalPercentage, 2) . '%', 0, 1, 'C');
+    $pdf->Ln(10);
 
-    //displays scores Table
-    $pdf->SetFont('Arial', 'B', 12); 
-    $pdf->Cell(32, 10, 'Average Score', 1);
-    $pdf->Cell(20, 10, 'Q1 Score', 1);
-    $pdf->Cell(20, 10, 'Q2 Score', 1);
-    $pdf->Cell(20, 10, 'Q3 Score', 1);
-    $pdf->Cell(20, 10, 'Q4 Score', 1);
-    $pdf->Cell(20, 10, 'Q5 Score', 1);
+    //formatting for table header
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(32, 10, 'Total points', 1, 0, 'C');
+    $pdf->Cell(32, 10, 'Percentage', 1, 0, 'C');
+    $pdf->Cell(20, 10, 'Q1 Score', 1, 0, 'C');
+    $pdf->Cell(20, 10, 'Q2 Score', 1, 0, 'C');
+    $pdf->Cell(20, 10, 'Q3 Score', 1, 0, 'C');
+    $pdf->Cell(20, 10, 'Q4 Score', 1, 0, 'C');
+    $pdf->Cell(20, 10, 'Q5 Score', 1, 0, 'C');
     $pdf->Ln();
 
-    $pdf->SetFont('Arial', '', 11); 
-    
-    foreach ($reviews as $review) {
-        //displays average for review
-        $average_rating = ($review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating']) / 5;
+    //outputs display of singular review scores
+    $pdf->SetFont('Arial', '', 11);
 
-        $pdf->Cell(32, 10, number_format($average_rating, 2), 1);
-        $pdf->Cell(20, 10, $review['q1_rating'], 1);
-        $pdf->Cell(20, 10, $review['q2_rating'], 1);
-        $pdf->Cell(20, 10, $review['q3_rating'], 1);
-        $pdf->Cell(20, 10, $review['q4_rating'], 1);
-        $pdf->Cell(20, 10, $review['q5_rating'], 1);
+    foreach ($reviews as $review) {
+        $calculatedScore = $review['q1_rating'] + $review['q2_rating'] + $review['q3_rating'] + $review['q4_rating'] + $review['q5_rating'];
+        $percentage = ($calculatedScore / $maxTotal) * 100;
+
+        $pdf->Cell(32, 10, $calculatedScore, 1, 0, 'C');
+        $pdf->Cell(32, 10, number_format($percentage, 2) . '%', 1, 0, 'C');
+        $pdf->Cell(20, 10, $review['q1_rating'], 1, 0, 'C');
+        $pdf->Cell(20, 10, $review['q2_rating'], 1, 0, 'C');
+        $pdf->Cell(20, 10, $review['q3_rating'], 1, 0, 'C');
+        $pdf->Cell(20, 10, $review['q4_rating'], 1, 0, 'C');
+        $pdf->Cell(20, 10, $review['q5_rating'], 1, 0, 'C');
         $pdf->Ln();
     }
 
